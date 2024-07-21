@@ -1,10 +1,20 @@
 package com.sky.yb.user.service.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
-@Builder
+@Getter
+@ToString
+@EqualsAndHashCode
 public class JwtResponse {
-    private String jwtToken;
+    private final String jwtToken;
+
+    private JwtResponse(String jwtToken) {
+        this.jwtToken = jwtToken;
+    }
+
+    public static JwtResponse of(String jwtToken) {
+        return new JwtResponse(jwtToken);
+    }
 }

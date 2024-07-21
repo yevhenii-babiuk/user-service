@@ -9,16 +9,12 @@ import com.sky.yb.user.service.repository.UserRepository;
 import com.sky.yb.user.service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Log4j2
 @Service
@@ -39,7 +35,10 @@ public class UserServiceImpl implements UserService {
 
         User newUser = mapper.mapToUser(userDto);
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        newUser.setUserRoles(Set.of(DEFAULT_ROLE));
+
+        if (newUser.getUserRoles() == null || newUser.getUserRoles().isEmpty()) {
+            newUser.addUserRoles(DEFAULT_ROLE);
+        }
 
         return userRepository.save(newUser);
     }

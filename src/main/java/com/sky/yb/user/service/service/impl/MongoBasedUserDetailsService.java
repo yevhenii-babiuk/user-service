@@ -25,10 +25,14 @@ public class MongoBasedUserDetailsService implements UserDetailsService {
                                 )
                         ));
 
-        List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.name())).toList();
+        List<SimpleGrantedAuthority> authorities = user.getUserRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .toList();
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(),
+                user.getPassword(),
+                authorities);
     }
 
 }

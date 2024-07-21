@@ -6,7 +6,6 @@ import com.sky.yb.user.service.model.UserExternalProject;
 import com.sky.yb.user.service.repository.UserRepository;
 import com.sky.yb.user.service.service.UserExternalProjectService;
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +18,7 @@ import java.util.Optional;
 public class UserExternalProjectServiceImpl implements UserExternalProjectService {
     private final UserRepository userRepository;
 
+    @Override
     @Transactional
     public UserExternalProject addUserExternalProject(String userId,
                                                       UserExternalProjectDto projectDto) {
@@ -26,7 +26,6 @@ public class UserExternalProjectServiceImpl implements UserExternalProjectServic
 
         if (optionalUser.isPresent()) {
             UserExternalProject project = UserExternalProject.builder()
-                    .id(new ObjectId().toHexString())
                     .name(projectDto.getName())
                     .build();
 
@@ -40,12 +39,13 @@ public class UserExternalProjectServiceImpl implements UserExternalProjectServic
         }
     }
 
+    @Override
     public List<UserExternalProject> getProjects(String userId) {
         boolean isUserExist = userRepository.existsById(userId);
 
         if (isUserExist) {
-            User us = userRepository.findByIdWithExternalProjects(userId);
-            return us.getUserExternalProjects();
+            User user = userRepository.findByIdWithExternalProjects(userId);
+            return user.getUserExternalProjects();
         } else {
             throw new UsernameNotFoundException("User with provided ID does not exist");
         }

@@ -32,7 +32,7 @@ public class JwtTokenUtilTest {
 
     @BeforeEach
     void setUp() {
-        String secret = "testsecretkeytestsecretkeytestsecretkeytestsecretkey";
+        String secret = "dGVzdHNlY3JldGtleXRlc3RzZWNyZXRrZXl0ZXN0c2VjcmV0a2V5dGVzdHNlY3JldGtleQ==";
         long jwtExpirationInMs = 3600000;
         key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
         target = new JwtTokenUtil(key);

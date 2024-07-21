@@ -44,7 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         User newUser = mapper.mapToUser(userRegistrationDTO);
         newUser.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
-        newUser.setUserRoles(Set.of(DEFAULT_ROLE));
+        newUser.addUserRoles(DEFAULT_ROLE);
 
         userRepository.save(newUser);
     }
@@ -62,9 +62,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
         String token = jwtTokenUtil.generateToken(userDetails);
 
-        return JwtResponse.builder()
-                .jwtToken(token)
-                .build();
+        return JwtResponse.of(token);
     }
 
 }

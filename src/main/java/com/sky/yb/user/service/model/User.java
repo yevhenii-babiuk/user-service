@@ -1,41 +1,64 @@
 package com.sky.yb.user.service.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.*;
 
-@Data
 @Builder
 @Document(collection = "users")
 public class User {
+    @Getter
+    @Setter
     @MongoId
     private String id;
+
+    @Getter
+    @Setter
     @Indexed(unique = true)
     private String email;
-    @JsonIgnore
-    private String password;
-    private String name;
-    private List<UserExternalProject> userExternalProjects;
-    @DBRef
-    private Set<Role> userRoles;
 
-    @JsonIgnore
-    public Collection<Role> getRoles() {
-        return userRoles == null
-                ? Collections.emptySet()
-                : userRoles;
-    }
+    @Getter
+    @Setter
+    private String password;
+
+    @Getter
+    @Setter
+    private String name;
+
+    @Getter
+    @Setter
+    private List<UserExternalProject> userExternalProjects;
+
+    private Set<Role> userRoles;
 
     public void addExternalProjects(UserExternalProject projects) {
         if (userExternalProjects == null) {
             userExternalProjects = new LinkedList<>();
         }
         userExternalProjects.add(projects);
+    }
+
+    public Collection<Role> getUserRoles() {
+        return userRoles == null
+                ? Collections.emptySet()
+                : Set.copyOf(userRoles);
+    }
+
+    public void addUserRoles(Role role) {
+        if (userRoles == null) {
+            userRoles = new HashSet<>();
+        }
+        userRoles.add(role);
+    }
+
+    public void removeUserRoles(Role role) {
+        if (userRoles != null) {
+            userRoles.remove(role);
+        }
     }
 }

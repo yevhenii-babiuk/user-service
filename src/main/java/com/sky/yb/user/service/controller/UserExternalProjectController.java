@@ -5,7 +5,6 @@ import com.sky.yb.user.service.model.UserExternalProject;
 import com.sky.yb.user.service.service.UserExternalProjectService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +20,7 @@ public class UserExternalProjectController {
     @GetMapping("/{id}/projects")
     public ResponseEntity<List<UserExternalProject>> getUserExternalProject(@PathVariable String id) {
         List<UserExternalProject> projects = userExternalProjectService.getProjects(id);
-        return projects == null || projects.isEmpty()
-                ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(projects);
+        return ResponseEntity.ok(projects);
     }
 
     @PostMapping("/{id}/projects")

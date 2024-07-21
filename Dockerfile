@@ -1,9 +1,6 @@
 # Use an official OpenJDK runtime as a parent image
 FROM openjdk:21-jdk-slim
 
-# Set the working directory in the container
-#WORKDIR /app
-
 # Copy the Spring Boot application JAR file to the container
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} /app/user-service.jar
